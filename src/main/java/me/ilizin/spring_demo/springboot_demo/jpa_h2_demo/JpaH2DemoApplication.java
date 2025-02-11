@@ -25,7 +25,14 @@ public class JpaH2DemoApplication {
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
 			createStudent(studentDAO);
+			readStudent(studentDAO);
 		};
+	}
+
+	private void readStudent(StudentDAO studentDAO) {
+		logger.debug("Reading student with id: '{}'", 1);
+		Student student = studentDAO.findById(1);
+		logger.debug("The student is: '{}'", student);
 	}
 
 	private void createStudent(StudentDAO studentDAO) {
