@@ -41,14 +41,23 @@ public class JpaH2DemoApplication {
 						case 1:
 							createTask(jpaH2DemoMenu, taskDAO);
 							break;
-						case 5:
-							readTask(jpaH2DemoMenu, taskDAO);
+						case 2:
+							updateTask(jpaH2DemoMenu, taskDAO);
 							break;
-						case 6:
+						case 3:
+							deleteTask(jpaH2DemoMenu, taskDAO);
+							break;	
+						case 4:
+							readTaskById(jpaH2DemoMenu, taskDAO);
+							break;
+						case 5:
 							readTaskByWord(jpaH2DemoMenu, taskDAO);
 							break;
-						case 7:
+						case 6:
 							listAllTasks(jpaH2DemoMenu, taskDAO);
+							break;
+						case 7:
+							deleteAllTasks(jpaH2DemoMenu, taskDAO);
 							break;
 						case 8: break;
 						default:
@@ -64,6 +73,31 @@ public class JpaH2DemoApplication {
 			} while (selectedOption != 8) ;
 			jpaH2DemoMenu.close();
 		};
+	}
+
+	private void deleteAllTasks(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
+		int numberDeletedTaks = taskDAO.deleteAll();
+		jpaH2DemoMenu.printDeletedTasks(numberDeletedTaks);
+	}
+
+	private void deleteTask(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
+		Task task = readTaskById(jpaH2DemoMenu, taskDAO);
+		if(task == null) {
+			return;
+		}
+		taskDAO.delete(task);
+	}
+
+	private void updateTask(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
+		Task task = readTaskById(jpaH2DemoMenu, taskDAO);
+		if(task == null) {
+			return;
+		}
+		int id = task.getId();
+		task = jpaH2DemoMenu.readTask();
+		task.setId(id);
+		taskDAO.update(task);
+		jpaH2DemoMenu.printTask(task, task.getId());
 	}
 
 	private void readTaskByWord(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
@@ -82,12 +116,13 @@ public class JpaH2DemoApplication {
 		jpaH2DemoMenu.printAllTasks(tasks);
 	}
 
-	private void readTask(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
+	private Task readTaskById(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
 		int id = jpaH2DemoMenu.readId();
 		logger.debug("Reading task by id '{}'", id);
 		Task task = taskDAO.findById(id);
 		logger.debug("Task read is '{}'", task);
 		jpaH2DemoMenu.printTask(task, id);
+		return task;
 	}
 
 	private void createTask(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {

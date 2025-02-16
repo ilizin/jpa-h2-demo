@@ -45,4 +45,29 @@ public class TaskDAOImpl implements TaskDAO {
         query.setParameter("word", word);
         return query.getResultList();
     }
+
+    @Transactional
+    @Override
+    public void update(Task task) {
+        entityManager.merge(task);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Task task) {
+        /*
+         * You can also delete using a query
+         * int numRowsDeleted = entityManager.createQuery("DELETE FROM Task WHERE title='test title'").executeUpdate();
+         * //Why are we saying executeUpdate if we're deleting ? The method name "Update" is a generic term to say we're modifying the database
+         */
+        entityManager.remove(task);
+    }
+
+    @Transactional
+    @Override
+    public int deleteAll() {
+       int numRowsDeleted = entityManager.createQuery("DELETE FROM Task")
+                .executeUpdate();
+       return numRowsDeleted;
+    }
 }

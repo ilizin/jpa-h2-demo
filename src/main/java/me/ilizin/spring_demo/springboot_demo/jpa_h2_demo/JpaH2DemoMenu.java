@@ -21,12 +21,12 @@ public class JpaH2DemoMenu {
         System.out.println("\nChoose from these choices");
         System.out.println("-------------------------");
         System.out.println("1 - Create a task");
-        System.out.println("2 - Add a task");
-        System.out.println("3 - Update a task");
-        System.out.println("4 - Delete a task");
-        System.out.println("5 - Read a task by id");
-        System.out.println("6 - Read a task by word");
-        System.out.println("7 - List all tasks");
+        System.out.println("2 - Update a task");
+        System.out.println("3 - Delete a task");
+        System.out.println("4 - Read a task by id");
+        System.out.println("5 - Read a task by word");
+        System.out.println("6 - List all tasks");
+        System.out.println("7 - Delete all tasks");
         System.out.println("8 - Exit the demo");
         System.out.print("Option ==> ");
         selection = scanner.nextInt();
@@ -83,6 +83,15 @@ public class JpaH2DemoMenu {
             System.out.println("Task due date: " + task.getDueDate());
             System.out.println();
         }
+    }
+
+    public void printDeletedTasks(int numberDeletedTaks) {
+        System.out.println("\nDelete all tasks");
+        System.out.println("-------------------------");
+        if (numberDeletedTaks == 0) {
+            System.out.println("No tasks to delete");
+        }
+        System.out.println("Number deleted Tasks: " + numberDeletedTaks);
     }
 
     public void close() {

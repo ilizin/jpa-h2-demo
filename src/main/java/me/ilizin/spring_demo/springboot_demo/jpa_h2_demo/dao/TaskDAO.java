@@ -12,4 +12,10 @@ public interface TaskDAO {
     List<Task> findAll();
 
     List<Task> findByWord(String word);
+
+    void update(Task task);
+
+    void delete(Task task);
+
+    int deleteAll();
 }
