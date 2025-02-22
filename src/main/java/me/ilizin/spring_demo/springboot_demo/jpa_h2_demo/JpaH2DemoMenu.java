@@ -16,8 +16,8 @@ public class JpaH2DemoMenu {
         this.scanner = scanner;
     }
 
-    public int showInitialMenu() {
-        int selection;
+    public OptionsMenu showInitialMenu() {
+        String selection;
         System.out.println("\nChoose from these choices");
         System.out.println("-------------------------");
         System.out.println("1 - Create a task");
@@ -28,9 +28,10 @@ public class JpaH2DemoMenu {
         System.out.println("6 - List all tasks");
         System.out.println("7 - Delete all tasks");
         System.out.println("8 - Exit the demo");
+        System.out.println();
         System.out.print("Option ==> ");
-        selection = scanner.nextInt();
-        return selection;
+        selection = scanner.next();
+        return OptionsMenu.get(selection);
     }
 
     public Task readTask() {
@@ -43,11 +44,11 @@ public class JpaH2DemoMenu {
         return new Task(taskTitle, taskDescription, LocalDateTime.now());
     }
 
-    public int readId() {
+    public String readId() {
         System.out.println("\nRead a task by id");
         System.out.println("-------------------------");
         System.out.print("Task id ==> ");
-        return scanner.nextInt();
+        return scanner.next();
     }
 
     public String readWord() {
@@ -64,7 +65,7 @@ public class JpaH2DemoMenu {
 
     public void printTask(Task task, int id) {
         if (task == null) {
-            System.out.println("No task with id = " + id + " found");
+            System.out.println("No task with id '" + id + "' found");
         } else {
             System.out.println("Task title: " + task.getTitle());
             System.out.println("Task description: " + task.getDescription());
@@ -74,7 +75,7 @@ public class JpaH2DemoMenu {
 
     public void printAllTasks(List<Task> tasks) {
         if (tasks.isEmpty()) {
-            System.out.println("No tasks to show");
+            System.out.println("No tasks found");
         }
         for (Task task: tasks) {
             System.out.println("Task id: " + task.getId());
@@ -91,10 +92,17 @@ public class JpaH2DemoMenu {
         if (numberDeletedTaks == 0) {
             System.out.println("No tasks to delete");
         }
-        System.out.println("Number deleted Tasks: " + numberDeletedTaks);
+        System.out.println("Deleted tasks number: " + numberDeletedTaks);
     }
 
     public void close() {
         scanner.close();
+    }
+
+    public void pressToContinue() {
+        System.out.print("\nPress to continue");
+        //TODO Review this, why twice?
+        scanner.nextLine();
+        scanner.nextLine();
     }
 }

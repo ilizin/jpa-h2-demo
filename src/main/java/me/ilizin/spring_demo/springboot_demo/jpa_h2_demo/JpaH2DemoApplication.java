@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,46 +32,52 @@ public class JpaH2DemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(TaskDAO taskDAO, JpaH2DemoMenu jpaH2DemoMenu) {
 		return runner -> {
-			int selectedOption;
+			OptionsMenu selectedOption;
 			do {
 				selectedOption = jpaH2DemoMenu.showInitialMenu();
-				try {
-					switch (selectedOption) {
-						case 1:
-							createTask(jpaH2DemoMenu, taskDAO);
-							break;
-						case 2:
-							updateTask(jpaH2DemoMenu, taskDAO);
-							break;
-						case 3:
-							deleteTask(jpaH2DemoMenu, taskDAO);
-							break;	
-						case 4:
-							readTaskById(jpaH2DemoMenu, taskDAO);
-							break;
-						case 5:
-							readTaskByWord(jpaH2DemoMenu, taskDAO);
-							break;
-						case 6:
-							listAllTasks(jpaH2DemoMenu, taskDAO);
-							break;
-						case 7:
-							deleteAllTasks(jpaH2DemoMenu, taskDAO);
-							break;
-						case 8: break;
-						default:
-							System.out.print("The option selected is wrong, choose an option between 1-8");
+				if (selectedOption != null) {
+					try {
+						runOption(taskDAO, jpaH2DemoMenu, selectedOption);
+					} catch (Exception ex) {
+						logger.warn("A serious error happened, we close the application", ex);
+						selectedOption = OptionsMenu.EXIT;
 					}
-				} catch	(InputMismatchException ex) {
-					logger.warn("The input is wrong", ex);
-					System.out.print("The option selected is wrong, choose an option between 1-8");
-				} catch (Exception ex) {
-					logger.warn("A serious error happened, we close the application", ex);
-					selectedOption = 8;
+				} else {
+					System.out.println("The option selected is wrong, choose an option between 1 and 8");
 				}
-			} while (selectedOption != 8) ;
+				jpaH2DemoMenu.pressToContinue();
+			} while (selectedOption != OptionsMenu.EXIT) ;
 			jpaH2DemoMenu.close();
 		};
+	}
+
+	private void runOption(TaskDAO taskDAO, JpaH2DemoMenu jpaH2DemoMenu, OptionsMenu selectedOption) {
+		switch (selectedOption) {
+			case CREATE_TASK:
+				createTask(jpaH2DemoMenu, taskDAO);
+				break;
+			case UPDATE_TASK:
+				updateTask(jpaH2DemoMenu, taskDAO);
+				break;
+			case DELETE_TASK:
+				deleteTask(jpaH2DemoMenu, taskDAO);
+				break;
+			case READ_TASK_BY_ID:
+				readTaskById(jpaH2DemoMenu, taskDAO);
+				break;
+			case READ_TASK_BY_WORD:
+				readTaskByWord(jpaH2DemoMenu, taskDAO);
+				break;
+			case LIST_ALL_TASKS:
+				listAllTasks(jpaH2DemoMenu, taskDAO);
+				break;
+			case DELETE_ALL_TASKS:
+				deleteAllTasks(jpaH2DemoMenu, taskDAO);
+				break;
+			case EXIT: break;
+			default:
+				System.out.println("The option selected is wrong, choose an option between 1 and 8");
+		}
 	}
 
 	private void deleteAllTasks(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
@@ -117,12 +122,18 @@ public class JpaH2DemoApplication {
 	}
 
 	private Task readTaskById(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
-		int id = jpaH2DemoMenu.readId();
-		logger.debug("Reading task by id '{}'", id);
-		Task task = taskDAO.findById(id);
-		logger.debug("Task read is '{}'", task);
-		jpaH2DemoMenu.printTask(task, id);
-		return task;
+		String id = jpaH2DemoMenu.readId();
+		try {
+			int idNum = Integer.parseInt(id);
+			logger.debug("Reading task by id '{}'", id);
+			Task task = taskDAO.findById(idNum);
+			logger.debug("Task read is '{}'", task);
+			jpaH2DemoMenu.printTask(task, idNum);
+			return task;
+		} catch (NumberFormatException ex) {
+			System.out.println("The id is wrong, it must be a number");
+			return null;
+		}
 	}
 
 	private void createTask(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {

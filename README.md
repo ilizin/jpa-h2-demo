@@ -25,3 +25,7 @@ GitHub: [ilizin](https://github.com/ilizin)
 ## 🙌 Acknowledgments
 
 ## ℹ️ Additional information
+
+https://www.baeldung.com/spring-boot-disable-console-logging
+https://www.baeldung.com/spring-boot-logging
+https://www.baeldung.com/logback
