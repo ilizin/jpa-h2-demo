@@ -3,7 +3,9 @@ package me.ilizin.spring_demo.springboot_demo.jpa_h2_demo;
 import me.ilizin.spring_demo.springboot_demo.jpa_h2_demo.entity.Task;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,7 +43,16 @@ public class JpaH2DemoMenu {
         String taskTitle = scanner.next();
         System.out.print("Task description ==> ");
         String taskDescription = scanner.next();
-        return new Task(taskTitle, taskDescription, LocalDateTime.now());
+        System.out.print("Task due date (dd-MM-yyyy) ==> ");
+        String dueDate = scanner.next();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        try {
+            LocalDate dateTime = LocalDate.parse(dueDate.trim(), formatter);
+            return new Task(taskTitle, taskDescription, dateTime.atStartOfDay());
+        } catch (DateTimeParseException ex) {
+            System.out.println("Error entering the date, please use the correct format (dd-MM-yyyy)");
+            return null;
+        }
     }
 
     public String readId() {

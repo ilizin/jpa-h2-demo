@@ -100,6 +100,9 @@ public class JpaH2DemoApplication {
 		}
 		int id = task.getId();
 		task = jpaH2DemoMenu.readTask();
+		if (task == null) {
+			return;
+		}
 		task.setId(id);
 		taskDAO.update(task);
 		jpaH2DemoMenu.printTask(task, task.getId());
@@ -138,6 +141,9 @@ public class JpaH2DemoApplication {
 
 	private void createTask(JpaH2DemoMenu jpaH2DemoMenu, TaskDAO taskDAO) {
 		Task task = jpaH2DemoMenu.readTask();
+		if (task == null) {
+			return;
+		}
 		logger.debug("Saving a task object");
 		taskDAO.save(task);
 		logger.debug("Saved task. Generated id: '{}'", task.getId());
