@@ -11,7 +11,7 @@
 	<artifactId>jpa-h2-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jpa-h2-demo</name>
-	<description>Demo project for setting up a Jpa application with Spring Boot</description>
+	<description>A CRUD Jpa/hibernate (h2) demo project</description>
 	<url/>
 	<licenses>
 		<license/>
