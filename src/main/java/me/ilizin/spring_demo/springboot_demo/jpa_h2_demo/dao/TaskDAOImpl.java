@@ -20,8 +20,8 @@ public class TaskDAOImpl implements TaskDAO {
 
     @Transactional
     @Override
-    public void save(Task student) {
-        entityManager.persist(student);
+    public void save(Task task) {
+        entityManager.persist(task);
     }
 
     // The Transactional annotation is not necessary because we're just querying
