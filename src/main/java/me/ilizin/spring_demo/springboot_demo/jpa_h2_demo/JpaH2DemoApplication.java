@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 import java.util.Scanner;
@@ -29,6 +30,7 @@ public class JpaH2DemoApplication {
 	/* When using @Bean for a method such as commandLineRunner, Spring will check the arguments to the method.
 	   Spring will resolve the method arguments by injecting the appropriate Spring Bean. In this case,
 	   there is no need to use @Autowired. Spring will inject the beans automatically behind the scenes. */
+	@Profile("!test")
 	@Bean
 	public CommandLineRunner commandLineRunner(TaskDAO taskDAO, JpaH2DemoMenu jpaH2DemoMenu) {
 		return runner -> {

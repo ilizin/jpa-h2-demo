@@ -26,6 +26,7 @@ GitHub: [ilizin](https://github.com/ilizin)
 
 ## ℹ️ Additional information
 
-https://www.baeldung.com/spring-boot-disable-console-logging
-https://www.baeldung.com/spring-boot-logging
-https://www.baeldung.com/logback
+* https://www.baeldung.com/spring-boot-disable-console-logging
+* https://www.baeldung.com/spring-boot-logging
+* https://www.baeldung.com/logback
+* https://www.baeldung.com/spring-junit-prevent-runner-beans-testing-execution
